@@ -23,10 +23,10 @@ const NewsLetter = () => {
         <p className='h3'>Stay updated and never miss an opportunity.</p>
 
         <iframe
-          src='https://wemakedevs-newsletter.vercel.app/'
+          src='https://wemakedevs-newsletter.netlify.app/'
           width='100%'
           height={iframeHeight}
-          style={{ border: '0' }}
+          style={{ border: '0', scroll: 'no' }}
           title='Subscribe to our newsletter by entering your details below'
         ></iframe>
       </div>

@@ -12,15 +12,20 @@ import {
 } from '@/content/courses';
 import { CoursesPageContent } from '@/content/courses/CoursesPageContent';
 import OpenSourcePageContent from '@/content/courses/opensource';
-import NapptiveHackathon from '@/content/Hackathons/napptive';
+import { hackathonDataList } from '@/content/Hackathons';
 import { MeetupPageContent } from '@/content/Meetup';
 import Delhi2023 from '@/content/Meetup/delhi-may-2023';
 import { OpensourcePageContent } from '@/content/opensource';
+import RoadLessTravelledContent from '@/content/roadlesstravelled';
 import Supper25Content from '@/content/super25';
 import WebinarPageContent, { webinar } from '@/content/Webinars/index.content';
 
 import { Loader } from '@/components/layout';
 import ScrollToTop from '@/components/ScrollToTop';
+
+const RoadLessTravelledPage = lazy(() =>
+  import('@/pages/RoadLessTravelledPage')
+);
 
 const ScholarshipsPage = lazy(() => import('@/pages/ScholarshipsPage'));
 const HackathonsPage = lazy(() => import('@/pages/HackathonPage'));
@@ -101,11 +106,21 @@ const App = () => {
 
           {/* Hackathon */}
           <Route exact path='/events/hackathons' element={<HackathonsPage />} />
-          <Route
+          {hackathonDataList
+            .filter((hack) => hack.hasContent)
+            .map((hack) => (
+              <Route
+                key={hack.content.title}
+                exact
+                path={`/events/hackathons/${hack.content.slug}`}
+                element={<PerticularhackathonPage content={hack.content} />}
+              />
+            ))}
+          {/* <Route
             exact
             path={`/events/hackathons/${NapptiveHackathon.slug}`}
             element={<PerticularhackathonPage content={NapptiveHackathon} />}
-          />
+          /> */}
 
           {/* Meetup */}
           <Route
@@ -138,6 +153,15 @@ const App = () => {
             exact
             path='/events/educational'
             element={<EducationalEventsPage />}
+          />
+
+          {/* Career events */}
+          <Route
+            exact
+            path='/events/road-less-travelled'
+            element={
+              <RoadLessTravelledPage content={RoadLessTravelledContent} />
+            }
           />
 
           {/* Super 25 */}

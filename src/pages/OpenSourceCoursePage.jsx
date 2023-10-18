@@ -56,7 +56,7 @@ const OpenSourcePage = ({ content }) => {
                   src='https://www.youtube.com/embed/inZUgh8p1d4'
                   title='YouTube video player'
                   allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-                  allowfullscreen
+                  allowFullScreen
                   className='mx-auto mt-8 block aspect-video h-full w-full max-w-[50rem] rounded-xl border-2 border-content/50 object-cover shadow-[0_1rem_3rem] shadow-content/30'
                 ></iframe>
                 <p className='mx-auto mt-6 max-w-lg text-center text-xl text-indigo-100 sm:max-w-[50rem]'>
@@ -195,22 +195,11 @@ const OpenSourcePage = ({ content }) => {
           tweetId={tweetId}
           setTweetId={setTweetId}
           title='Testimonials'
+          btnText='See more testimonials #OpenSourceWithKunal'
+          btnLink='https://twitter.com/search?q=%23OpenSourceWithKunal'
         />
         <Faq faq={content.faq} />
 
-        <section id='register'>
-          <div className='mx-auto flex flex-col items-center justify-center gap-4 py-20 text-center'>
-            <h2 className='h1'>Register for course</h2>
-            <hr className='styled-hr' />
-            <iframe
-              src='https://wemakedevs-newsletter.vercel.app/opensource-course.html'
-              width='100%'
-              style={{ border: '0' }}
-              height={700}
-              title='Register for the course'
-            ></iframe>
-          </div>
-        </section>
         <JoinUs />
         <Partner />
       </main>

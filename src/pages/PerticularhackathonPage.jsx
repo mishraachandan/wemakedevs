@@ -1,13 +1,22 @@
 import { useEffect, useState } from 'react';
 import { AiOutlineArrowRight } from 'react-icons/ai';
 import { BsTrophy } from 'react-icons/bs';
+import { GiSprint } from 'react-icons/gi';
 import { HiOutlineArrowRight } from 'react-icons/hi';
 import { MdOutlineLabelImportant } from 'react-icons/md';
 import { VscDebugBreakpointLogUnverified } from 'react-icons/vsc';
 
+import { getDate } from '@/lib/utils';
+
 import SpeakerCard from '@/components/Cards/SpeakerCard';
 import TimeLineCard from '@/components/Cards/TimeLineCard';
-import { ColumnSection, FAQ, Footer, Navbar } from '@/components/layout';
+import {
+  ColumnSection,
+  FAQ,
+  Footer,
+  Navbar,
+  Partner,
+} from '@/components/layout';
 import { ArrowLink, ButtonLink, UnstyledLink } from '@/components/links';
 import ListItem from '@/components/Listitem';
 
@@ -18,187 +27,228 @@ const PerticularhackathonPage = ({ content }) => {
       <section>
         <div className='layout flex flex-col items-center justify-center gap-4 py-32'>
           <h1 className='heading highlight'>{content.title}</h1>
-          <h2>{content.description}</h2>
-          <iframe
-            src={content.videoUrl}
-            title='YouTube video player'
-            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-            allowFullScreen
-            className='mt-8 block aspect-video h-full w-full max-w-[50rem] rounded-xl border-2 object-cover shadow-[0_1rem_3rem] shadow-primary/80'
-          ></iframe>
+          <h2>{content.by}</h2>
+          {content.videoUrl ? (
+            <iframe
+              src={content.videoUrl}
+              title='YouTube video player'
+              allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+              allowFullScreen
+              className='mt-8 block aspect-video h-full w-full max-w-[50rem] rounded-xl border-2 object-cover shadow-[0_1rem_3rem] shadow-primary/80'
+            ></iframe>
+          ) : content.image ? (
+            <img
+              alt='blog'
+              className='mt-8 block aspect-video h-full w-full max-w-[50rem] rounded-xl border-2 object-cover shadow-[0_1rem_3rem] shadow-primary/80'
+              src={content.image}
+            />
+          ) : (
+            `Add videoUrl or image to ${content.slug}.json file`
+          )}
+
           <div className='h2 mt-10 font-normal'>
             <span className='font-bold'>Start: </span>
-            {new Date(content.from).toLocaleDateString('en-US', {
-              dateStyle: 'medium',
-            })}{' '}
-            {new Date(content.from).toLocaleTimeString('en-US', {
-              timeStyle: 'short',
-            })}{' '}
-            {/\((.*)\)/
-              .exec(new Date(content.from).toString())[1]
-              .split(' ')
-              .map((i) => i[0].toUpperCase())
-              .join('')}
+            {/* {getDateTime(content.from)} */}
+            {getDate(content.from)}
           </div>
           <div className='h2 font-normal'>
-            <span className='font-bold'>End: </span>{' '}
-            {new Date(content.to).toLocaleDateString('en-US', {
-              dateStyle: 'medium',
-            })}{' '}
-            {new Date(content.to).toLocaleTimeString('en-US', {
-              timeStyle: 'short',
-            })}{' '}
-            {/\((.*)\)/
-              .exec(new Date(content.to).toString())[1]
-              .split(' ')
-              .map((i) => i[0].toUpperCase())
-              .join('')}
+            <span className='font-bold'>End: </span>
+            {/* {getDateTime(content.to)} */}
+            {getDate(content.to)}
           </div>
-          <div className='h2 font-bold'>
-            Winnner announcement{' '}
-            {new Date(content.winnerAnnouc).toLocaleDateString('en-US', {
-              dateStyle: 'medium',
-            })}{' '}
-            {new Date(content.winnerAnnouc).toLocaleTimeString('en-US', {
-              timeStyle: 'short',
-            })}{' '}
-            {/\((.*)\)/
-              .exec(new Date(content.winnerAnnouc).toString())[1]
-              .split(' ')
-              .map((i) => i[0].toUpperCase())
-              .join('')}
+          <div className='h2 text-center font-bold'>
+            {/* Winner announcement: {getDateTime(content.winnerAnnouc)} */}
+            Winner announcement: {getDate(content.winnerAnnouc)}
           </div>
 
-          {new Date().getTime() < new Date(content.from).getTime() ? (
-            <ButtonLink as={ArrowLink} className='mt-10' href='#register'>
-              Register
-            </ButtonLink>
-          ) : (
-            <ButtonLink as={ArrowLink} className='mt-10' href={content.liveUrl}>
-              {new Date().getTime() > new Date(content.to).getTime()
-                ? 'Watch reacording'
-                : 'Join now'}
-            </ButtonLink>
-          )}
+          <div className='flex flex-col gap-4 md:flex-row'>
+            {new Date().getTime() < new Date(content.from).getTime() ? (
+              <ButtonLink as={ArrowLink} className='mt-10' href='#register'>
+                Register
+              </ButtonLink>
+            ) : new Date().getTime() < new Date(content.to).getTime() ? (
+              <ButtonLink
+                as={ArrowLink}
+                className='md:mt-10'
+                href={content.liveUrl}
+              >
+                Watch recording
+              </ButtonLink>
+            ) : (
+              <ButtonLink as={ArrowLink} className='mt-10' href='#resources'>
+                Join now
+              </ButtonLink>
+            )}
+            {content.submissionForm && (
+              <ButtonLink
+                as={ArrowLink}
+                className='md:mt-10'
+                href={content.submissionForm}
+              >
+                Submit Project
+              </ButtonLink>
+            )}
+          </div>
         </div>
       </section>
       {/* Theme section */}
       <ColumnSection id='about' src={content.hero} title='About'>
-        <ListItem>
-          Do you want to learn new skills, discover how to build and deploy
-          cloud native apps and meet like-minded people? Find this and much more
-          and take part in our hackathon!
-        </ListItem>
-        <ListItem>
-          If you want to learn new skills, discover how to build and deploy
-          cloud native apps and meet like-minded people, this is your chance to
-          collaborate with other talented developers and work together to build
-          something amazing.
-        </ListItem>
-        <ListItem>
-          You will have access to a cutting-edge platform, based on the most
-          advanced cloud-native technology and get the opportunity to learn from
-          experts and gain valuable experience working on real applications.
-        </ListItem>
-        <ListItem>
-          The WeMakeDevs {'<>'} Napptive Hackathon is the right place for you if
-          you are a passionate, hands-on dev. The will to push yourself to new
-          limits and learn along the way is all you need to begin!
-        </ListItem>
+        {content.about.map((item) => (
+          <ListItem key={item}>{item}</ListItem>
+        ))}
       </ColumnSection>
       {/* timeline section */}
-      <section id='timeline'>
-        <div className='layout py-20'>
-          <h2 className='h1 text-center'>Timeline</h2>
-          <hr className='styled-hr mx-auto my-6' />
-          <ol className='mt-9 flex flex-col flex-wrap justify-center gap-y-6 md:flex-row'>
-            {content.timeline.map((timeline) => {
-              return <TimeLineCard {...timeline} key={timeline.date} />;
-            })}
-          </ol>
-        </div>
-      </section>
-      {/* Prizes section */}
-      <section id='tracks'>
-        <div className='layout py-20 text-center'>
-          <h2 className='h1 mb-4'>Hackathon tracks</h2>
-          <p className='h4 mt-2 font-normal'>
-            Choose the track that best suits your skills and interests and win
-            prizes worth of $1200
-          </p>
-          <p className='h4 mt-2 font-normal text-gray-400'>
-            Potential internship offer to participants who perform well!
-          </p>
-          <hr className='styled-hr mx-auto my-6' />
-          <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3'>
-            {content.prizes.map((item) => (
-              <div
-                className='rounded-xl bg-base-200 p-6 text-left'
-                key={item.title}
-              >
-                <BsTrophy
-                  style={{ fill: 'url(#blue-gradient)' }}
-                  className='h2'
-                />
-                <h3 className='mt-5 font-normal'>{item.title}</h3>
-                <p className='mt-4 whitespace-pre-line'>
-                  {item.guide !== '' && (
-                    <>
-                      Using the{' '}
-                      <UnstyledLink
-                        href={item.guide}
-                        className='text-primary-disable underline underline-offset-2'
-                      >
-                        guide
-                      </UnstyledLink>
-                    </>
-                  )}{' '}
-                  {item.description}
-                </p>
-                {item.guide === '' && (
-                  <>
-                    <p className='mt-6 mb-3 text-primary-disable'>
-                      Steps to take part:
-                    </p>
-                    <ul className='flex flex-col gap-2'>
-                      <li className='flex items-center gap-2'>
-                        <AiOutlineArrowRight className='shrink-0' />{' '}
-                        <span>
-                          Write a blog on your learnings on Hashnode following
-                          these{' '}
-                          <UnstyledLink
-                            href='https://wemakedevs.org/events/hashnode'
-                            className='text-primary-disable underline underline-offset-2'
-                          >
-                            steps
-                          </UnstyledLink>
-                        </span>
-                      </li>
-                      <li className='flex items-center gap-2'>
-                        <AiOutlineArrowRight className='shrink-0' /> Make sure
-                        to add #WeMakeDevs when publishing it on Hashnode.
-                      </li>
-                      <li className='flex items-center gap-2'>
-                        <AiOutlineArrowRight className='shrink-0' />
-                        Share your blog on Twitter and tag @WeMakeDevs @hashnode
-                        @napptivecompany
-                      </li>
-                    </ul>
-                  </>
-                )}
-                <p className='mt-6 mb-3 text-primary-disable'>Prizes worth</p>
-                <ul className='flex flex-col gap-2'>
-                  {item.gift.map((gift) => (
-                    <li className='flex items-center gap-2' key={gift}>
-                      <AiOutlineArrowRight className='shrink-0' /> {gift}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+      {content.timeline.length > 0 && (
+        <section id='timeline'>
+          <div className='layout py-20'>
+            <h2 className='h1 text-center'>Timeline</h2>
+            <hr className='styled-hr mx-auto my-6' />
+            <ol className='mt-9 flex flex-col flex-wrap justify-center gap-y-6 md:flex-row'>
+              {content.timeline.map((timeline) => {
+                return <TimeLineCard {...timeline} key={timeline.date} />;
+              })}
+            </ol>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
+      {/* Tracks section */}
+      {content.tracks && (
+        <section id='tracks'>
+          <div className='layout py-20 text-center'>
+            <h2 className='h1 mb-4'>Hackathon tracks</h2>
+            <p className='h4 mt-2 font-normal'>
+              Choose the track that best suits your skills and interests and win
+              prizes worth of $1200
+            </p>
+
+            <hr className='styled-hr mx-auto my-6' />
+            <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3'>
+              {content.tracks.map((item) => (
+                <div
+                  className='rounded-xl bg-base-200 p-6 text-left'
+                  key={item.title}
+                >
+                  <GiSprint
+                    style={{ fill: 'url(#blue-gradient)' }}
+                    className='h2'
+                  />
+                  <h3 className='mt-5 font-normal'>{item.title}</h3>
+                  <p className='mt-4 whitespace-pre-line'>
+                    {item.guide !== '' && item.guide && (
+                      <>
+                        Using the{' '}
+                        <UnstyledLink
+                          href={item.guide}
+                          className='text-primary-disable underline underline-offset-2'
+                        >
+                          guide
+                        </UnstyledLink>
+                      </>
+                    )}{' '}
+                    {item.description}
+                  </p>
+                  {item.guide === '' && (
+                    <>
+                      <p className='mt-6 mb-3 text-primary-disable'>
+                        Steps to take part:
+                      </p>
+                      <ul className='flex flex-col gap-2'>
+                        <li className='flex items-center gap-2'>
+                          <AiOutlineArrowRight className='shrink-0' />{' '}
+                          <span>
+                            Write a blog on your learnings on Hashnode following
+                            these{' '}
+                            <UnstyledLink
+                              href='https://wemakedevs.org/events/hashnode'
+                              className='text-primary-disable underline underline-offset-2'
+                            >
+                              steps
+                            </UnstyledLink>
+                          </span>
+                        </li>
+                        <li className='flex items-center gap-2'>
+                          <AiOutlineArrowRight className='shrink-0' /> Make sure
+                          to add #WeMakeDevs when publishing it on Hashnode.
+                        </li>
+                        <li className='flex items-center gap-2'>
+                          <AiOutlineArrowRight className='shrink-0' />
+                          Share your blog on Twitter and tag @WeMakeDevs
+                          @hashnode @napptivecompany
+                        </li>
+                      </ul>
+                    </>
+                  )}
+                  {item.gift && (
+                    <>
+                      <p className='mt-6 mb-3 text-primary-disable'>
+                        Prizes worth
+                      </p>
+                      <ul className='flex flex-col gap-2'>
+                        {item.gift.map((gift) => (
+                          <li className='flex items-center gap-2' key={gift}>
+                            <AiOutlineArrowRight className='shrink-0' /> {gift}
+                          </li>
+                        ))}
+                      </ul>
+                    </>
+                  )}
+                  {item.image && (
+                    <figure className='mt-3 flex aspect-square w-full items-center justify-center rounded-lg bg-content/10'>
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className='rounded-md object-cover'
+                      />
+                    </figure>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+      {/* Prizes section */}
+      {content.prizes.length > 0 && (
+        <section id='tracks'>
+          <div className='layout py-20 text-center'>
+            <h2 className='h1 mb-4'>Prizes for this hackathon</h2>
+            <hr className='styled-hr mx-auto my-6' />
+            <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3'>
+              {content.prizes.map((item) => (
+                <div
+                  className='rounded-xl bg-base-200 p-6 text-left'
+                  key={item.title}
+                >
+                  <BsTrophy
+                    style={{ fill: 'url(#blue-gradient)' }}
+                    className='h2'
+                  />
+                  <h3 className='mt-5 font-normal'>{item.title}</h3>
+                  <p className='mt-4 whitespace-pre-line'>{item.description}</p>
+                  <figure className='mt-3 flex aspect-square w-full items-center justify-center rounded-lg bg-content/10'>
+                    {item.image ? (
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className='rounded-md object-cover'
+                      />
+                    ) : (
+                      <div className='mx-2 flex flex-col gap-2'>
+                        {item.gift.map((gift, index) => (
+                          <li className='flex gap-2 text-xl' key={index}>
+                            <AiOutlineArrowRight className='mt-1 shrink-0' />{' '}
+                            {gift}
+                          </li>
+                        ))}
+                      </div>
+                    )}
+                  </figure>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
       {/* Judges */}
       <section id='judges'>
         <div className='layout py-20'>
@@ -271,14 +321,7 @@ const PerticularhackathonPage = ({ content }) => {
           </ul>
         </div>
       </section>
-      {/* Register */}
-      {new Date().getTime() < new Date(content.to).getTime() ? (
-        <Register name={content.slug} />
-      ) : (
-        ''
-      )}
-
-      {/* Register Section */}
+      {/* Resources Section */}
       <section id='resources'>
         <div className='layout py-20 text-center'>
           <h2 className='h1'>Resources</h2>
@@ -309,6 +352,12 @@ const PerticularhackathonPage = ({ content }) => {
           </ul>
         </div>
       </section>
+      {/* Register Section */}
+      {new Date().getTime() < new Date(content.to).getTime() ? (
+        <Register name={content.slug} />
+      ) : (
+        ''
+      )}
     </Layout>
   );
 };
@@ -321,6 +370,7 @@ const Layout = ({ content, children }) => {
       <Navbar links={content.header} cta={content.CTA} />
       <main className='main'>
         {children}
+        <Partner />
         <FAQ faq={content.faq} />
       </main>
       <Footer />
@@ -349,7 +399,7 @@ const Register = ({ name }) => {
         <h2 className='h1'>Register for the hackathon</h2>
         <hr className='styled-hr' />
         <iframe
-          src={`https://wemakedevs-newsletter.vercel.app/${name}.html`}
+          src={`https://wemakedevs-newsletter.netlify.app/${name}.html`}
           width='100%'
           style={{ border: '0' }}
           height={iframeHeight}

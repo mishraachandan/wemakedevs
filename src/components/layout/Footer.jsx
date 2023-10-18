@@ -5,9 +5,10 @@ import {
   FaInstagram,
   FaLinkedin,
   FaTelegramPlane,
-  FaTwitter,
   FaYoutube,
 } from 'react-icons/fa';
+import { FaXTwitter } from 'react-icons/fa6';
+import { MdAlternateEmail } from 'react-icons/md';
 import { SiHashnode } from 'react-icons/si';
 
 import clsxm from '@/lib/utils';
@@ -19,7 +20,7 @@ const Footer = () => {
   return (
     <footer className='bg-base-200 py-24 text-content' id='footer'>
       <div className='layout flex flex-col gap-4'>
-        <div className='mx-auto grid w-full grid-cols-2 justify-between gap-4 py-4 md:grid-cols-4'>
+        <div className='mx-auto grid w-full grid-cols-2 justify-between gap-x-0 gap-y-4 py-4 sm:gap-x-4 md:grid-cols-4'>
           <div>
             <p className='h4 w-fit border-b-4 border-primary pb-1 text-gray-50'>
               Organization
@@ -77,7 +78,7 @@ const Footer = () => {
           <UnstyledLink href='/#' className='h3 font-black'>
             WeMakeDevs
           </UnstyledLink>
-          <div className='mx-auto flex flex-wrap items-center gap-4 lg:mr-0'>
+          <div className='mx-auto flex flex-wrap items-center justify-center gap-4 lg:mr-0'>
             {links.map((link) => (
               <UnstyledLink
                 key={link.name}
@@ -179,9 +180,9 @@ const links = [
   {
     name: 'twitter',
     link: 'https://twitter.com/WeMakeDevs',
-    icon: <FaTwitter />,
+    icon: <FaXTwitter />,
     ariaLabel: 'Visit WeMakeDevs on Twitter',
-    className: 'hover:text-[#1DA1F2]',
+    className: 'hover:text-[#FAF3F0]',
   },
   {
     name: 'instagram',
@@ -224,5 +225,12 @@ const links = [
     icon: <SiHashnode />,
     ariaLabel: 'Visit WeMakeDevs on hashnode',
     className: 'hover:text-[#2962ff]',
+  },
+  {
+    name: 'threads',
+    link: 'https://www.threads.net/@wemakedevs',
+    icon: <MdAlternateEmail />,
+    ariaLabel: 'Visit WeMakeDevs on Threads',
+    className: 'hover:text-[#333333]',
   },
 ];
